@@ -1,9 +1,58 @@
-# CPP-Program
-This C++ project is aimed at  calculates CGPA (Cumulative Grade Point Average) based on user inputs for grades. The program assumes a typical grading system where each course has a specific number of credit hours, and the user enters their grades (on a scale of 0-10)..  It is implemented with standard C++ features and can be compiled and run using any compatible C++ compiler.
 
-To calculate the Cumulative Grade Point Average (CGPA) in a C++ program, the core functionality typically involves:
+#include <iostream>
+#include <vector>
 
-Input the Grades: The program accepts the grades (often in numerical or letter form) for different subjects or courses.
-Convert Grades to Points: If grades are in letter format (A, B+, etc.), they need to be converted to Grade Points (for example, A = 4.0, B+ = 3.5, etc.). If the grades are already numeric, this step may be skipped.
-Compute Total Points: For each subject, the Grade Point is multiplied by the credit hours for that subject to get the weighted points.
-Calculate CGPA: The CGPA is the total weighted points divided by the total credit hours
+using namespace std;
+
+// Function to calculate CGPA
+double calculateCGPA(const vector<int>& grades, const vector<int>& credits, int numSubjects) {
+    double totalWeightedGradePoints = 0;
+    int totalCredits = 0;
+
+    for (int i = 0; i < numSubjects; i++) {
+        totalWeightedGradePoints += grades[i] * credits[i];  // Sum of grade points * credits
+        totalCredits += credits[i];  // Sum of all credits
+    }
+
+    return totalWeightedGradePoints / totalCredits;  // CGPA = Sum of weighted grade points / total credits
+}
+
+int main() {
+    int numSubjects;
+
+    // Input the number of subjects
+    cout << "Enter the number of subjects: ";
+    cin >> numSubjects;
+
+    vector<int> grades(numSubjects);
+    vector<int> credits(numSubjects);
+
+    // Input grades and credits for each subject
+    for (int i = 0; i < numSubjects; i++) {
+        cout << "Enter grade for subject " << (i + 1) << " (0-10): ";
+        cin >> grades[i];
+
+        // Validate grade input
+        while (grades[i] < 0 || grades[i] > 10) {
+            cout << "Invalid grade. Please enter a grade between 0 and 10: ";
+            cin >> grades[i];
+        }
+
+        cout << "Enter the number of credits for subject " << (i + 1) << ": ";
+        cin >> credits[i];
+
+        // Validate credit input
+        while (credits[i] <= 0) {
+            cout << "Credits must be positive. Please enter valid credits for subject " << (i + 1) << ": ";
+            cin >> credits[i];
+        }
+    }
+
+    // Calculate CGPA
+    double cgpa = calculateCGPA(grades, credits, numSubjects);
+
+    // Output the calculated CGPA
+    cout << "Your CGPA is: " << cgpa << endl;
+
+    return 0;
+}
